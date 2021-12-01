@@ -1,2 +1,5 @@
 dominoCloneClient/.idea
 dominoCloneClient/package-lock.json
+/.metadata/
+dominoCloneServer/bin/.gitignore
+dominoCloneServer/bin/
