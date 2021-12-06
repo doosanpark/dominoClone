@@ -15,11 +15,11 @@ public class TestController{
 
 	@Autowired 
 	TestService testService; 
-	
+
 	@RequestMapping(value = "/test") 
 	public ModelAndView test() throws Exception{ 
 		ModelAndView mav = new ModelAndView("test"); 
-		
+
 		List<TestVo> testList = testService.selectTest(); 
 		mav.addObject("list", testList); 
 		
