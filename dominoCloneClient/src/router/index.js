@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import TestSY from '@/components/TestSY'
 import TestDS from '@/components/TestDS'
+import LoginView from '@/components/LoginView'
 
 Vue.use(Router)
 
@@ -24,6 +25,11 @@ export default new Router({
       path: '/TestDS',
       name: 'TestDS',
       component: TestDS
+    },
+    {
+      path: '/global/login',
+      name: 'login',
+      component: LoginView
     }
   ]
 })
