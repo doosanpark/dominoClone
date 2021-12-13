@@ -1,11 +1,12 @@
 <template>
-    <div></div>
+    <div>dd</div>
 </template>
 
 <script>
+/*eslint-disable*/
 export default {
   name: 'LoginView',
-  data () {
+  data() {
     return {
       msg: 'loginView'
     }

@@ -15,11 +15,12 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
   name: 'TestDS',
   data () {
     return {
-      msg: 'Welcome to Your TestDS'
+      msg:'Welcome to Your TestDS'
     }
   }
 }
