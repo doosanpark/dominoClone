@@ -27,7 +27,7 @@ export default new Router({
       component: TestDS
     },
     {
-      path: '/global/login',
+      path: '/accnt/login',
       name: 'login',
       component: LoginView
     }
