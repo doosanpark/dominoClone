@@ -1,4 +1,4 @@
-package unic.domino.pizza.clone.server.test.controller;
+package unic.domino.pizza.clone.server.security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
