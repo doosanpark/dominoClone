@@ -86,6 +86,13 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 		
+		<!-- dev tools. 저장 시 서버 재시작 없이 바로 반영 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+		<optional>true</optional>
+	</dependency>
 	</dependencies>
 
 	<build>
