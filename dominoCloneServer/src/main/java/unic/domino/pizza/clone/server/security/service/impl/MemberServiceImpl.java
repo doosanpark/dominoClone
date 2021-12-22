@@ -46,27 +46,28 @@ public class MemberServiceImpl implements MemberService {
     
     //로그인 아이디 비번 확인
     @Override
-    public UserDetails loadUserByUsername(String account, String password) throws UsernameNotFoundException {
-        Optional<Member> memberEntityWrapper = memberDao.findByAccountAndPassword(account, password);		// and 쿼리
+    public Boolean loadUserByUsername(String account, String password) throws UsernameNotFoundException {
+        Optional<Member> memberEntityWrapper = memberDao.findByAccount(account);		// and 쿼리
         Member memberEntity = memberEntityWrapper.orElse(null);
-        String encodedPassword = passwordEncoder.encode(password);	//스프링 시큐리티 암호화 작업은 매번 랜덤키를 부여
+        //String encodedPassword = passwordEncoder.encode(password);	//스프링 시큐리티 암호화 작업은 매번 랜덤키를 부여
         
-        //저장된 암호 비교 로직
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();				
-        if(encoder.matches("asdf", encodedPassword)) {	//비번과 입력한 비번과 스프링 시큐리티에 의해 랜덤키로 암호화된 비번 비교
-        	System.out.println(true);
-        } else {
-        	System.out.println(false);
+        Boolean isLogined = false;
+        
+        if(memberEntity != null) {
+        	List<GrantedAuthority> authorities = new ArrayList<>();
+        	authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
+            
+        	String encodedPassword = memberEntity.getPassword();
+            
+        	//저장된 암호 비교 로직
+        	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();				
+        	if(encoder.matches(password, encodedPassword)) {	//비번과 입력한 비번과 스프링 시큐리티에 의해 랜덤키로 암호화된 비번 비교
+        		isLogined = true;
+        	}
+            
         }
         
-        
-        if(memberEntity == null) {
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
-            return new User(memberEntity.getAccount(), memberEntity.getPassword(), authorities);
-        }
-        
-        return null;
+        return isLogined;
     }
     
     //로그인 중복체크

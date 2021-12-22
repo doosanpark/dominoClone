@@ -10,5 +10,5 @@ import unic.domino.pizza.clone.server.security.vo.MemberVO;
 public interface MemberService extends UserDetailsService {
     Integer save(MemberVO memberTO);
 
-	UserDetails loadUserByUsername(String account, String password) throws UsernameNotFoundException;
+	Boolean loadUserByUsername(String account, String password) throws UsernameNotFoundException;
 }
