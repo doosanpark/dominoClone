@@ -1,5 +1,7 @@
 package unic.domino.pizza.clone.server.join.entity;
 
+import org.hibernate.annotations.Where;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
