@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-
 import unic.domino.pizza.clone.server.security.service.MemberService;
 import unic.domino.pizza.clone.server.security.vo.MemberVO;
 
@@ -35,14 +32,12 @@ public class MemberController {
     @RequestMapping(value = "/checkaccnt")
     public @ResponseBody Boolean checkAccnt(@RequestParam HashMap<String, Object> paramMap, ModelMap model, 
     		HttpServletRequest request, HttpServletResponse response ) throws Exception{
-    	Gson gson = new Gson();
-    	JsonParser jparser = new JsonParser();	
     	
     	System.out.println("paramMap ::::: " + paramMap);
     	System.out.println("model ::::: " + model);
 		Boolean isLogined = memberService.loadUserByUsername((String)paramMap.get("accnt"), (String)paramMap.get("pass"));
 		System.out.println("isLogined ::::: " + isLogined);
-//    	
+		
 //    	if(userDetails == null) {
 //    	} else {
 //    	}
@@ -52,7 +47,6 @@ public class MemberController {
     
     @GetMapping("/login")
     public String loginView() {
-    	System.out.println("login");
         return "pages/login";
     }
 
@@ -63,7 +57,6 @@ public class MemberController {
 
     @PostMapping("/signup")
     public String signup(MemberVO memberVO) {
-    	System.out.println("sdfafd");
         memberService.save(memberVO);
         return "redirect:/login";
     }
