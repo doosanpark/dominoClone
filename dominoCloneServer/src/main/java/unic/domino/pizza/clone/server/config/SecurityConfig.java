@@ -9,12 +9,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import unic.domino.pizza.clone.server.security.service.impl.MemberServiceImpl;
@@ -63,8 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.permitAll();
 
 		// 로그아웃 설정을 진행
-		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // logoutRequestMatcher(new
-																					// AntPathRequestMatcher("path"))
+		http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")) // logoutRequestMatcher(new AntPathRequestMatcher("path"))
 				.logoutSuccessUrl("/login") // 로그아웃 성공 시 이동할 경로를 지정합니다.
 				.invalidateHttpSession(true); // 로그아웃 성공 시 세션을 제거합니다.
 
@@ -73,6 +69,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		//csrf 체크를 안해야 post 전송 가능
 		http.csrf().disable();
+		
+		//csrf 토큰 부여
+		//참고: https://zzang9ha.tistory.com/341
+		//http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 	}
 
 	// AuthenticationManagerBuilder : AuthenticationManager를 생성.
@@ -81,8 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(memberService).passwordEncoder(passwordEncoder());
 		// auth.userDetailsService(service)에
-		// org.springframework.security.core.userdetails.UserDetailsService 인터페이스를 구현한
-		// Service를 넘겨야함
+		// org.springframework.security.core.userdetails.UserDetailsService 인터페이스를 구현한 Service를 넘겨야함
 	}
 
 }
