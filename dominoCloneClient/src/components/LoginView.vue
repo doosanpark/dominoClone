@@ -16,7 +16,7 @@
             </b-input-group>
 
             <b-input-group>
-              <b-form-input id="pass" ref="pass" placeholder="비밀번호"></b-form-input>
+              <b-form-input id="pass" ref="pass" type="password" placeholder="비밀번호"></b-form-input>
             </b-input-group>
 
             <div class="chk_item">
@@ -82,6 +82,11 @@ export default {
       .then(response => {
         this.resp = response;
         console.log(response);
+
+        if(response.data === true){
+          axios.get("http://localhost:8080/login");
+        }
+
       })
       .catch(e => {
         console.error(e);
@@ -90,6 +95,7 @@ export default {
   }
 }
 </script>
+
 <style>
   #view {
     display: flex;
