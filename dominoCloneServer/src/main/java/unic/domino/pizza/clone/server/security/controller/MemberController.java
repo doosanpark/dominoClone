@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,27 +36,22 @@ public class MemberController {
     }
     
     @RequestMapping(value = "/checkaccnt")
-    public @ResponseBody Boolean checkAccnt(@RequestParam HashMap<String, Object> paramMap, ModelMap model, 
+    public @ResponseBody HashMap<String, Object> checkAccnt(@RequestParam HashMap<String, Object> paramMap, ModelMap model, 
     		HttpServletRequest request, HttpServletResponse response ) throws Exception{
     	LOG.debug("checkAccnt");							//Log.debug 표시 안됨
     	LOG.debug("paramMap : " + paramMap.toString());		//Log.debug 표시 안됨
     	HttpSession session = request.getSession();
-    	Boolean isLogined = true;
-    	UserDetails user = memberService.loadUserByUsername((String)paramMap.get("accnt"), (String)paramMap.get("pass"));
-    	if(user == null) {
-    		isLogined = false;
-    		return isLogined;
-    	}
+    	HashMap<String, Object> user = memberService.loadUserByUsername((String)paramMap.get("accnt"), (String)paramMap.get("pass"));
     	
-    	session.setAttribute("accnt", user.getUsername());
-    	session.setAttribute("auth", user.getAuthorities());
-    	request.setAttribute("accnt", user.getUsername());
-    	request.setAttribute("auth", user.getAuthorities());
+//    	session.setAttribute("accnt", user.getUsername());
+//    	session.setAttribute("auth", user.getAuthorities());
+//    	request.setAttribute("accnt", user.getUsername());
+//    	request.setAttribute("auth", user.getAuthorities());
 //    	if(userDetails == null) {
 //    	} else {
 //    	}
     	
-    	return isLogined;
+    	return user;
     }
     
     @GetMapping("/login")

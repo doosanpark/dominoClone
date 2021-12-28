@@ -2,6 +2,7 @@ package unic.domino.pizza.clone.server.security.service.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,12 +47,12 @@ public class MemberServiceImpl implements MemberService {
     
     //로그인 아이디 비번 확인
     @Override
-    public Boolean loadUserByUsername(String account, String password) throws UsernameNotFoundException {
+    public HashMap<String, Object> loadUserByUsername(String account, String password) throws UsernameNotFoundException {
         Optional<Member> memberEntityWrapper = memberDao.findByAccount(account);		// and 쿼리
         Member memberEntity = memberEntityWrapper.orElse(null);
         //String encodedPassword = passwordEncoder.encode(password);	//스프링 시큐리티 암호화 작업은 매번 랜덤키를 부여
         
-        Boolean isLogined = false;
+        HashMap<String, Object> user = new HashMap<String, Object>();
         
         if(memberEntity != null) {
         	List<GrantedAuthority> authorities = new ArrayList<>();
@@ -62,12 +63,14 @@ public class MemberServiceImpl implements MemberService {
         	//저장된 암호 비교 로직
         	BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();				
         	if(encoder.matches(password, encodedPassword)) {	//비번과 입력한 비번과 스프링 시큐리티에 의해 랜덤키로 암호화된 비번 비교
-        		isLogined = true;
+        		user.put("accnt", memberEntity.getAccount());
+        		user.put("name", memberEntity.getName());
+        		user.put("auth", authorities);
         	}
             
         }
         
-        return isLogined;
+        return user;
     }
     
     //로그인 중복체크
@@ -79,7 +82,7 @@ public class MemberServiceImpl implements MemberService {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         authorities.add(new SimpleGrantedAuthority("ROLE_MEMBER"));
-
+        
         return new User(memberEntity.getAccount(), memberEntity.getPassword(), authorities);
     }
     
