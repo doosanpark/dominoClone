@@ -12,16 +12,16 @@
 
             <!-- Using props -->
             <b-input-group>
-              <b-form-input id="accnt" ref="accnt" placeholder="아이디"></b-form-input>
+              <b-form-input v-model="accnt" id="accnt" ref="accnt" placeholder="아이디"></b-form-input>
             </b-input-group>
 
             <b-input-group>
-              <b-form-input id="pass" ref="pass" type="password" placeholder="비밀번호"></b-form-input>
+              <b-form-input v-model="pass" id="pass" ref="pass" type="password" placeholder="비밀번호"></b-form-input>
             </b-input-group>
 
             <div class="chk_item">
               <span>
-                <input type="checkbox" aria-label="Checkbox for following text input">
+                <input v-model="save_info" type="checkbox" aria-label="Checkbox for following text input">
                 아이디 저장
               </span>
               <span>
@@ -49,40 +49,58 @@
 <script>
 /* eslint-disable */
 import axios from "axios"
-import $ from 'jquery';
+import VueCookies from 'vue-cookies'
+import _ from 'lodash';
 
 export default {
   name: 'LoginView',
   data() {
     return {
-      dismissSecs: 10,
-      dismissCountDown: 0,
-      showDismissibleAlert: false
+      dismissSecs: 10
+      , dismissCountDown: 0
+      , showDismissibleAlert: false
+      , accnt: ""
+      , pass: ""
+      , save_info: false
     }
   },
   methods: {
     postData() {
       // let paramMap = {}; 
-      // paramMap.acnnt = $("#accnt").val(); 
-      // paramMap.pass = $("#pass").val(); 
-
-      // console.log("accnt click evnt", this.$refs.accnt);
-      // console.log("pass click evnt", this.$refs.pass);
+      // paramMap.acnnt = this.accnt; 
+      // paramMap.pass = this.pass; 
 
       // axios를 이용하여 post 방식으로 보낼 경우 FormData()형식으로 보내야 함
       // 그렇지 않으면 spring에서 빈 데이터를 받음
       const formData = new FormData();
-      formData.append('accnt', $("#accnt").val());
-      formData.append('pass', $("#pass").val());
+      formData.append('accnt', this.accnt);
+      formData.append('pass', this.pass);
 
+      console.log("save_info", this.save_info);
+
+      const range = _.range(1, 3); // [1, 2]
+      const random = _.random(0, 5); // an integer between 0 and 5
+      console.log("range", range);
+      console.log("random", random);
+      
       axios.post(
         "http://localhost:8080/checkaccnt"
         , formData
       )
       .then(response => {
         this.resp = response;
-        console.log(response);
+        const data = response.data;
 
+        if(Object.keys(data).length>0){
+          
+          VueCookies.set('accnt', data.accnt);
+          VueCookies.set('name', data.name);
+          VueCookies.set('auth', data.auth[0].authority);
+          if(this.save_info === true){
+            this.$cookies.config("1m") // expire 1일 (global 설정)
+          }
+        }
+        
         if(response.data === true){
           axios.get("http://localhost:8080/login");
         }
