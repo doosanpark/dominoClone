@@ -9,52 +9,63 @@
       <form name="form" @submit.prevent="handleRegister">
         <div v-if="!successful">
           <div class="form-group">
-            <label for="username">Username</label>
+            <label for="userid">사용자 ID</label>
             <input
               type="text"
               class="form-control"
-              name="username"
-              id="username"
-              v-model="user.username"
-              v-validate="'required|min:3|max:20'"
+              name="userid"
+              id="userid"
+              v-model="user.id.userId"
             />
             <div
               class="alert-danger"
-              v-if="submitted && errors.has('username')"
-            >{{errors.first('username')}}</div>
+              v-if="submitted"
+            >{{errors.first('userid')}}</div>
           </div>
           <div class="form-group">
-            <label for="email">Email</label>
+            <label for="email">이메일</label>
             <input
               type="email"
               class="form-control"
               name="email"
               id="email"
-              v-model="user.email"
-              v-validate="'required|email|max:50'"
+              v-model="user.id.userEmail"
             />
             <div
               class="alert-danger"
-              v-if="submitted && errors.has('email')"
+              v-if="submitted"
             >{{errors.first('email')}}</div>
           </div>
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="password">비밀번호</label>
             <input
               type="password"
               class="form-control"
               name="password"
               id="password"
-              v-model="user.password"
-              v-validate="'required|min:6|max:40'"
+              v-model="user.userPassword"
             />
             <div
               class="alert-danger"
-              v-if="submitted && errors.has('password')"
+              v-if="submitted"
             >{{errors.first('password')}}</div>
           </div>
+          <div class="form-group">
+            <label for="phone">전화번호</label>
+            <input
+              type="text"
+              class="form-control"
+              name="phone"
+              id="phone"
+              v-model="user.phoneNumber"
+            />
+            <div
+              class="alert-danger"
+              v-if="submitted"
+            >{{errors.first('phone')}}</div>
+          </div>
           <div class="form-group mt-3">
-            <button class="btn btn-primary btn-block">Sign Up</button>
+            <button class="btn btn-primary btn-block">회원가입</button>
           </div>
         </div>
       </form>
@@ -69,19 +80,38 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
   name: 'TestSY',
   computed: {
-    loggedIn () {
-      return this.$store.state.auth.status.loggedIn
-    }
+    // loggedIn () {
+    //   return this.$store.state.auth.status.loggedIn
+    // }
   },
   data () {
     return {
       user: {
-        username: '',
-        email: '',
-        password: ''
+        'id': {
+          'userId': '',
+          'userEmail': ''
+        },
+        'userPassword': '',
+        'phoneNumber': '',
+        'address': '서울시',
+        'zipCode': '04026',
+        'accntCertiYn': '',
+        'accntAvailPriod': '3',
+        'birthInfo': '',
+        'agreeCllctPrivtInfoYn': '',
+        'userLevel': '',
+        'exPwd': null,
+        'lastChgdDtm': null,
+        'modId': null,
+        'regId': null,
+        'cashRcptYn': 'Y',
+        'cashRcpt': null,
+        'cashRcptInfo': null
       },
       submitted: false,
       successful: false,
@@ -89,30 +119,26 @@ export default {
     }
   },
   mounted () {
-    if (this.loggedIn) {
-      this.$router.push('/')
-    }
+    // if (this.loggedIn) {
+    //   this.$router.push('/')
+    // }
   },
   methods: {
     handleRegister () {
       this.message = ''
       this.submitted = true
-      /* this.$validator.validate().then(valid => {
-        if (valid) {
-          this.$store.dispatch('auth/register', this.user).then(
-            data => {
-              this.message = data.message
-              this.successful = true
-            },
-            error => {
-              this.message = error.message
-              this.successful = false
-            }
-          ).then(
-            this.$router.push('/')
-          )
-        }
-      }) */
+      console.log(this.user)
+      axios.post(
+        'http://localhost:8080/api/v1/join/insert'
+        , this.user
+      )
+        .then(response => {
+          this.resp = response
+          console.log(response)
+        })
+        .catch(e => {
+          console.error(e)
+        })
     }
   }
 }
