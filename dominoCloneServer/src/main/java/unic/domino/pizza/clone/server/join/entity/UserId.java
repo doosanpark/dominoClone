@@ -1,5 +1,8 @@
 package unic.domino.pizza.clone.server.join.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
@@ -9,6 +12,9 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
+@Getter
+@Setter
+@ToString
 public class UserId implements Serializable {
     private static final long serialVersionUID = 8404557011841513470L;
     @Column(name = "id", nullable = false)
@@ -17,30 +23,6 @@ public class UserId implements Serializable {
     private String userId;
     @Column(name = "user_email", nullable = false)
     private String userEmail;
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     @Override
     public int hashCode() {
