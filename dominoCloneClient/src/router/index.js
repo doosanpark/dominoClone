@@ -5,6 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import TestSY from '@/components/TestSY'
 import TestDS from '@/components/TestDS'
 import LoginView from '@/components/LoginView'
+import RegStep2 from "../components/RegStep2";
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/accnt/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/member/regStep2',
+      name: 'regStep2',
+      component: RegStep2
     }
   ]
 })
