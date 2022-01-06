@@ -1,12 +1,11 @@
 <template>
   <div class="container myInfo">
     <form name="form" @submit.prevent="handleRegister">
-
       <dl>
         <dt class="center">이름</dt>
         <dd>
           <div class="form-item name">
-            <input type="text" placeholder="" id="name" name="name" value="김상윤" disabled="disabled">
+            <input type="text" placeholder="" id="name" name="name">
           </div>
         </dd>
       </dl>
@@ -14,7 +13,7 @@
         <dt class="top">아이디</dt>
         <dd>
           <div class="form-item name">
-            <input type="text" name="id" id="id" maxlength="16">
+            <input type="text" name="id" id="id" maxlength="16" v-model="user.id.userId">
             <a href="javascript:idCheck($('#id'));" class="btn btn-dark">중복확인</a>
           </div>
           <div class="text-type4" id="id_alert" style="display:none;"></div>
@@ -25,14 +24,14 @@
         <dt class="top">비밀번호</dt>
         <dd class="mb">
           <div class="form-item number">
-            <input type="password" name="passwd" id="passwd" maxlength="16" placeholder="8~16자 영문대소문자,숫자, 특수문자 사용가능">
+            <input type="password" name="passwd" id="passwd" maxlength="16" placeholder="8~16자 영문대소문자,숫자, 특수문자 사용가능" ref="passwd">
           </div>
           <div class="text-type4" id="passwd_alert" style="display:none;"></div>
         </dd>
         <dt class="top">비밀번호 확인</dt>
         <dd>
           <div class="form-item number">
-            <input type="password" name="confirmpw" id="confirmpw" maxlength="16" value="">
+            <input type="password" name="confirmpw" id="confirmpw" maxlength="16" v-model="user.userPassword" ref="confirmpw">
           </div>
           <div class="text-type4" id="confirmpw_alert" style="display:none;"></div>
         </dd>
@@ -48,7 +47,7 @@
               <input type="radio" name="birth_fl" id="birth_m" value="M" class="form-check-input">
               <label class="checkbox" for="birth_m"></label>
               <label for="birth_m">음력</label>
-              <select name="byear" id="byear" class="selected" disabled="">
+              <select name="byear" id="byear" class="selected" ref="byear">
                 <option value="">년</option>
                 <option value="2022">2022</option>
                 <option value="2021">2021</option>
@@ -83,7 +82,7 @@
                 <option value="1992">1992</option>
                 <option value="1991">1991</option>
                 <option value="1990">1990</option>
-                <option value="1989" selected="selected">1989</option>
+                <option value="1989">1989</option>
                 <option value="1988">1988</option>
                 <option value="1987">1987</option>
                 <option value="1986">1986</option>
@@ -174,30 +173,30 @@
                 <option value="1901">1901</option>
                 <option value="1900">1900</option>
               </select>
-              <select name="bmonth" id="bmonth" class="selected" disabled="">
-                <option>월</option>
+              <select name="bmonth" id="bmonth" class="selected" ref="bmonth">
+                <option value="">월</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
                 <option value="6">6</option>
-                <option value="7" selected="">7</option>
+                <option value="7">7</option>
                 <option value="8">8</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
                 <option value="11">11</option>
                 <option value="12">12</option>
               </select>
-              <select name="bday" id="bday" class="selected" disabled="">
-                <option>일</option>
+              <select name="bday" id="bday" class="selected" ref="bday">
+                <option value="">일</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
                 <option value="5">5</option>
                 <option value="6">6</option>
-                <option value="7" selected="">7</option>
+                <option value="7">7</option>
                 <option value="8">8</option>
                 <option value="9">9</option>
                 <option value="10">10</option>
@@ -236,7 +235,7 @@
         <dd>
           <div class="form-group v2">
             <div class="form-item">
-              <select name="sel_hand_tel1" id="sel_hand_tel1" disabled="" class="selected" title="휴대전화번호">
+              <select name="sel_hand_tel1" id="sel_hand_tel1" class="selected" title="휴대전화번호" ref="sel_hand_tel1">
                 <option value="010" selected="">010</option>
                 <option value="011">011</option>
                 <option value="016">016</option>
@@ -244,10 +243,10 @@
                 <option value="018">018</option>
                 <option value="019">019</option>
               </select>
-              <input type="text" name="hand_tel2" id="hand_tel2" maxlength="4" value="5110" disabled="" class="i_text"
-                     onkeyup="checkNum($(this), '숫자만 입력해주세요.');" title="휴대전화번호">
-              <input type="text" name="hand_tel3" id="hand_tel3" maxlength="4" value="6300" disabled="" class="i_text"
-                     onkeyup="checkNum($(this), '숫자만 입력해주세요.');" title="휴대전화번호">
+              <input type="text" name="hand_tel2" id="hand_tel2" maxlength="4" class="i_text"
+                     v-on:blur="isNumeric" ref="hand_tel2" title="휴대전화번호">
+              <input type="text" name="hand_tel3" id="hand_tel3" maxlength="4" class="i_text"
+                     v-on:blur="isNumeric" ref="hand_tel3" title="휴대전화번호">
               <a href="javascript:void(0)" class="btn btn-dark">
                 인증완료
               </a>
@@ -262,16 +261,16 @@
         <dd>
           <div class="form-group v2">
             <div class="form-item e-mail">
-              <input type="text" name="email1" id="email1">
+              <input type="text" name="email1" id="email1" ref="email1">
               <span>@</span>
-              <input type="text" name="email2" id="email2">
-              <select name="email3" id="email3" onchange="checkEmailState($('#email3'),$('#email2'))">
+              <input type="text" name="email2" id="email2" ref="email2">
+              <select name="email3" id="email3" v-on:change="setEmailHost" ref="email3">
                 <option value="naver.com">네이버</option>
                 <option value="hanmail.net">한메일</option>
                 <option value="gmail.com">지메일</option>
                 <option value="hotmail.com">핫메일</option>
                 <option value="nate.com">네이트</option>
-                <option value="WRITE" selected="">직접입력</option>
+                <option value="" selected="">직접입력</option>
               </select>
               <a href="javaScript:doCheckEmail();" class="btn btn-dark">중복확인</a>
             </div>
@@ -286,13 +285,13 @@
           <div class="chk-wrap">
             <div class="chk-box selected">
               <input type="radio" name="info_years" id="info_years1" value="1" checked="checked"
-                     class="form-check-input">
+                     class="form-check-input" refs="info_years1" v-model="user.accntAvailPriodLimit">
               <label class="checkbox" for="info_years1"></label>
               <label for="info_years1">1년</label>
-              <input type="radio" name="info_years" id="info_years3" value="3" class="form-check-input">
-              <label class="checkbox" for="info_years3"></label>
+              <input type="radio" name="info_years" id="info_years3" value="3" class="form-check-input" v-model="user.accntAvailPriodLimit">
+              <label class="checkbox" for="info_years3" ></label>
               <label for="info_years3">3년</label>
-              <input type="radio" name="info_years" id="info_years5" value="5" class="form-check-input">
+              <input type="radio" name="info_years" id="info_years5" value="5" class="form-check-input" v-model="user.accntAvailPriodLimit">
               <label class="checkbox" for="info_years5"></label>
               <label for="info_years5">5년</label>
             </div>
@@ -447,22 +446,24 @@
       </button>
     </form>
   </div>
-
-
 </template>
 
 <script>
 
 import axios from 'axios'
+import * as moment from 'moment/moment'
 
 export default {
-  name: "RegStep2",
+  name: 'RegStep2',
   computed: {
+    wrongNumber () {
+      return this.isNumeric(this.number) === false
+    }
     // loggedIn () {
     //   return this.$store.state.auth.status.loggedIn
     // }
   },
-  data() {
+  data () {
     return {
       user: {
         'id': {
@@ -475,6 +476,7 @@ export default {
         'zipCode': '',
         'accntCertiYn': '',
         'accntAvailPriod': '',
+        'accntAvailPriodLimit': '1',
         'birthInfo': '',
         'agreeCllctPrivtInfoYn': '',
         'userLevel': '',
@@ -491,16 +493,36 @@ export default {
       message: ''
     }
   },
-  mounted() {
+  mounted () {
     // if (this.loggedIn) {
     //   this.$router.push('/')
     // }
   },
   methods: {
-    handleRegister() {
+    isNumeric (e) {
+      const n = e.target.value
+      const isNum = !isNaN(parseFloat(n)) && isFinite(n)
+      if (!isNum) {
+        alert('숫자를 입력해주세요')
+        e.target.value = ''
+      }
+    },
+    setEmailHost () {
+      this.$refs.email2.value = this.$refs.email3.value
+      if (this.$refs.email2.value !== '') {
+        this.$refs.email2.disabled = true
+      } else {
+        this.$refs.email2.disabled = false
+      }
+    },
+    handleRegister () {
       this.message = ''
       this.submitted = true
-      console.log(this.user)
+      if (this.setData()) {
+        this.saveData()
+      }
+    },
+    saveData () {
       axios.post(
         'http://localhost:8080/api/v1/join/insert'
         , this.user
@@ -508,10 +530,36 @@ export default {
         .then(response => {
           this.resp = response
           console.log(response)
+          alert('저장이 완료되었습니다.')
         })
         .catch(e => {
           console.error(e)
         })
+    },
+    setData () {
+      if ((this.$refs.passwd.value === '' || this.$refs.passwd.value.length < 8) || this.$refs.passwd.value !== this.$refs.confirmpw.value) {
+        alert('비밀번호를 다시 확인해주세요')
+        this.$refs.passwd.focus()
+        return false
+      }
+      if (this.$refs.email1.value === '' || this.$refs.email2.value === '') {
+        alert('이메일 주소를 입력해주세요')
+        return false
+      }
+      if (this.$refs.byear.value === '' || this.$refs.bmonth.value === '' || this.$refs.bday.value === '') {
+        alert('생년월일을 입력해주세요')
+        return false
+      }
+      if (this.$refs.sel_hand_tel1.value === '' || this.$refs.hand_tel2.value === '' || this.$refs.hand_tel3.value === '') {
+        alert('휴대전화 번호를 입력해주세요')
+        return false
+      }
+      this.user.phoneNumber = `${this.$refs.sel_hand_tel1.value}${this.$refs.hand_tel2.value}${this.$refs.hand_tel3.value}`
+      this.user.id.userEmail = `${this.$refs.email1.value}@${this.$refs.email2.value}`
+      this.user.accntAvailPriod = moment().add(this.user.accntAvailPriodLimit, 'years').toISOString()
+      // moment().add(this.user.accntAvailPriodLimit, 'years').format('YYYY-MM-DDTHH:mm:ss.SSS')
+      this.user.birthInfo = `${this.$refs.byear.value}-${this.$refs.bmonth.value}-${this.$refs.bday.value}`
+      return true
     }
   }
 }
@@ -552,7 +600,6 @@ ul {
   vertical-align: middle;
   margin-top: 0;
 }
-
 
 input[type="text"], input[type="submit"], input[type="password"], input[type="search"], input[type="number"], input[type="reset"], input[type="email"], input[type="tel"], input[type="search"], input[type="file"], input[type="email"], input[type="tel"], textarea {
   border-radius: 0;

@@ -13,6 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 
 import axios from "axios"
+import moment from 'moment'
 
 import VueCookies from "vue-cookies"
 
@@ -23,6 +24,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
 Vue.use(VueCookies)
+Vue.use(moment)
 Vue.$cookies.config("1d") // expire 1일 (global 설정)
 
 Vue.prototype.$axios = axios  //다른 컴포넌트에서는 import 없이 this.$axios로 사용가능

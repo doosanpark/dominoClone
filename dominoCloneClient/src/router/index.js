@@ -5,7 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import TestSY from '@/components/TestSY'
 import TestDS from '@/components/TestDS'
 import LoginView from '@/components/LoginView'
-import RegStep2 from "../components/RegStep2";
+import RegStep2 from '../components/RegStep2'
 
 Vue.use(Router)
 

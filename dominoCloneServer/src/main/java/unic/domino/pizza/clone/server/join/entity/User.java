@@ -26,10 +26,10 @@ public class User {
     @Column(name = "phone_number", nullable = false, length = 20)
     private String phoneNumber;
 
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "zip_code", nullable = false)
+    @Column(name = "zip_code")
     private Integer zipCode;
 
     @Column(name = "reg_dtm")
