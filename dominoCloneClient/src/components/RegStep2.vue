@@ -363,14 +363,14 @@
         <dd>
           <div class="form agree">
             <div class="chk-box v4">
-              <input type="checkbox" id="agree_all" name="agree_chk" value="Y" class="all-check form-check-input">
+              <input type="checkbox" id="agree_all" name="agree_chk" value="Y" class="all-check form-check-input" v-on:change="changeChkbox('agree_all')" ref="agree_all">
               <label class="checkbox" for="agree_all"></label>
               <label for="agree_all">전체 동의하기</label>
             </div>
             <ul>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" name="agree_2" id="agree_2" value="Y" class="form-check-input">
+                  <input type="checkbox" name="agree_2" id="agree_2" value="Y" class="form-check-input" ref="agree_2">
                   <label class="checkbox" for="agree_2"></label>
                   <label for="agree_2" class="text-muted">개인정보 수집 및 이용 동의(필수)</label>
                   <a href="javascript:UI.layerPopUp({selId:'#pop-terms-p2'})" class="btn-link text-dark">보기</a>
@@ -378,7 +378,7 @@
               </li>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" name="agree_1" id="agree_1" value="Y" class="form-check-input">
+                  <input type="checkbox" name="agree_1" id="agree_1" value="Y" class="form-check-input" ref="agree_1">
                   <label class="checkbox" for="agree_1"></label>
                   <label for="agree_1" class="text-muted">이용약관 동의(필수)</label>
                   <a href="javascript:UI.layerPopUp({selId:'#pop-terms'})" class="btn-link text-dark">보기</a>
@@ -386,7 +386,7 @@
               </li>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" id="location_yn" name="location_yn" value="Y" class="form-check-input">
+                  <input type="checkbox" id="location_yn" name="location_yn" value="Y" class="form-check-input" ref="location_yn">
                   <label class="checkbox" for="location_yn"></label>
                   <label for="location_yn" class="text-muted">위치기반 서비스 약관 동의(필수)</label>
                   <a href="javascript:UI.layerPopUp({selId:'#pop-terms-p4'})" class="btn-link text-dark">보기</a>
@@ -410,28 +410,28 @@
         <dd>
           <div class="form agree">
             <div class="chk-box v4">
-              <input type="checkbox" id="agree_all2" name="agreeType1" class="all-check form-check-input">
+              <input type="checkbox" id="agree_all2" name="agreeType1" class="all-check form-check-input" v-on:change="changeChkbox('agree_all2')" ref="agree_all2">
               <label class="checkbox" for="agree_all2"></label>
               <label for="agree_all2">전체 동의하기</label>
             </div>
             <ul>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" id="chk_ds_fl" name="chk_ds_fl" value="Y" class="form-check-input">
+                  <input type="checkbox" id="chk_ds_fl" name="chk_ds_fl" value="Y" class="form-check-input" ref="chk_ds_fl">
                   <label class="checkbox" for="chk_ds_fl"></label>
                   <label for="chk_ds_fl" class="text-muted">문자메세지(선택)</label>
                 </div>
               </li>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" id="chk_dm_fl" name="chk_dm_fl" value="Y" class="form-check-input">
+                  <input type="checkbox" id="chk_dm_fl" name="chk_dm_fl" value="Y" class="form-check-input" ref="chk_dm_fl">
                   <label class="checkbox" for="chk_dm_fl"></label>
                   <label for="chk_dm_fl" class="text-muted">이메일(선택)</label>
                 </div>
               </li>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" id="chk_o_dm_fl" name="chk_o_dm_fl" value="Y" class="form-check-input">
+                  <input type="checkbox" id="chk_o_dm_fl" name="chk_o_dm_fl" value="Y" class="form-check-input" ref="chk_o_dm_fl">
                   <label class="checkbox" for="chk_o_dm_fl"></label>
                   <label for="chk_o_dm_fl" class="text-muted">DM 우편(최근 배달주소로 배송)(선택)</label>
                 </div>
@@ -452,6 +452,7 @@
 
 import axios from 'axios'
 import * as moment from 'moment/moment'
+import _ from 'lodash'
 
 export default {
   name: 'RegStep2',
@@ -520,6 +521,25 @@ export default {
       this.submitted = true
       if (this.setData()) {
         this.saveData()
+      }
+    },
+    changeChkbox (elName) {
+      if (_.isEqual(elName, 'agree_all') && this.$refs.agree_all.checked) {
+        this.$refs.agree_2.checked = true
+        this.$refs.agree_1.checked = true
+        this.$refs.location_yn.checked = true
+      } else if (_.isEqual(elName, 'agree_all') && !this.$refs.agree_all.checked) {
+        this.$refs.agree_2.checked = false
+        this.$refs.agree_1.checked = false
+        this.$refs.location_yn.checked = false
+      } else if (_.isEqual(elName, 'agree_all2') && this.$refs.agree_all2.checked) {
+        this.$refs.chk_ds_fl.checked = true
+        this.$refs.chk_dm_fl.checked = true
+        this.$refs.chk_o_dm_fl.checked = true
+      } else if (_.isEqual(elName, 'agree_all2') && !this.$refs.agree_all2.checked) {
+        this.$refs.chk_ds_fl.checked = false
+        this.$refs.chk_dm_fl.checked = false
+        this.$refs.chk_o_dm_fl.checked = false
       }
     },
     saveData () {
