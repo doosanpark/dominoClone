@@ -81,7 +81,7 @@ public class MemberController {
     public String adminView() {
         return "pages/admin";
     }
-
+ 
     @GetMapping("/denied")
     public String deniedView() {
         return "pages/denied";
