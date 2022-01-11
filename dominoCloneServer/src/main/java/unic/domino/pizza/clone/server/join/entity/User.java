@@ -1,14 +1,14 @@
 package unic.domino.pizza.clone.server.join.entity;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import lombok.experimental.Accessors;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
@@ -16,9 +16,18 @@ import java.time.Instant;
 @Setter
 @ToString
 @Table(name = "user")
+@Accessors(chain = true)
+@IdClass(UserKey.class)
 public class User {
-    @EmbeddedId
-    private UserId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
+    @Id
+    @Column(name = "user_id", nullable = false, length = 50)
+    private String userId;
+    @Id
+    @Column(name = "user_email", nullable = false)
+    private String userEmail;
 
     @Column(name = "user_password", nullable = false)
     private String userPassword;
@@ -73,4 +82,24 @@ public class User {
 
     @Column(name = "cash_rcpt_info", length = 45)
     private String cashRcptInfo;
+
+    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumns(value={
+            @JoinColumn(name="user_marketing_id")
+    }, foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+    private UserMarketing userMarketing;
+}
+
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@NoArgsConstructor
+class UserKey implements Serializable {
+    @EqualsAndHashCode.Include
+    @Id
+    private Integer id;
+    @EqualsAndHashCode.Include
+    @Id
+    private String userId;
+    @EqualsAndHashCode.Include
+    @Id
+    private String userEmail;
 }

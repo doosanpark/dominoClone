@@ -13,7 +13,7 @@
         <dt class="top">아이디</dt>
         <dd>
           <div class="form-item name">
-            <input type="text" name="id" id="id" maxlength="16" v-model="user.id.userId">
+            <input type="text" name="id" id="id" maxlength="16" v-model="user.userId">
             <a href="javascript:idCheck($('#id'));" class="btn btn-dark">중복확인</a>
           </div>
           <div class="text-type4" id="id_alert" style="display:none;"></div>
@@ -417,21 +417,21 @@
             <ul>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" id="chk_ds_fl" name="chk_ds_fl" value="Y" class="form-check-input" ref="chk_ds_fl">
+                  <input type="checkbox" id="chk_ds_fl" name="chk_ds_fl" value="Y" class="form-check-input" ref="chk_ds_fl" v-model="this.user.userMarketing.sms">
                   <label class="checkbox" for="chk_ds_fl"></label>
                   <label for="chk_ds_fl" class="text-muted">문자메세지(선택)</label>
                 </div>
               </li>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" id="chk_dm_fl" name="chk_dm_fl" value="Y" class="form-check-input" ref="chk_dm_fl">
+                  <input type="checkbox" id="chk_dm_fl" name="chk_dm_fl" value="Y" class="form-check-input" ref="chk_dm_fl" v-model="this.user.userMarketing.email">
                   <label class="checkbox" for="chk_dm_fl"></label>
                   <label for="chk_dm_fl" class="text-muted">이메일(선택)</label>
                 </div>
               </li>
               <li>
                 <div class="chk-box v4">
-                  <input type="checkbox" id="chk_o_dm_fl" name="chk_o_dm_fl" value="Y" class="form-check-input" ref="chk_o_dm_fl">
+                  <input type="checkbox" id="chk_o_dm_fl" name="chk_o_dm_fl" value="Y" class="form-check-input" ref="chk_o_dm_fl" v-model="this.user.userMarketing.address">
                   <label class="checkbox" for="chk_o_dm_fl"></label>
                   <label for="chk_o_dm_fl" class="text-muted">DM 우편(최근 배달주소로 배송)(선택)</label>
                 </div>
@@ -457,9 +457,6 @@ import _ from 'lodash'
 export default {
   name: 'RegStep2',
   computed: {
-    wrongNumber () {
-      return this.isNumeric(this.number) === false
-    }
     // loggedIn () {
     //   return this.$store.state.auth.status.loggedIn
     // }
@@ -467,10 +464,8 @@ export default {
   data () {
     return {
       user: {
-        'id': {
-          'userId': '',
-          'userEmail': ''
-        },
+        'userId': '',
+        'userEmail': '',
         'userPassword': '',
         'phoneNumber': '',
         'address': '',
@@ -487,7 +482,13 @@ export default {
         'regId': null,
         'cashRcptYn': 'Y',
         'cashRcpt': null,
-        'cashRcptInfo': null
+        'cashRcptInfo': null,
+        'userMarketing': {
+          'userId': '',
+          'email': false,
+          'sms': false,
+          'address': false
+        }
       },
       submitted: false,
       successful: false,
@@ -575,10 +576,11 @@ export default {
         return false
       }
       this.user.phoneNumber = `${this.$refs.sel_hand_tel1.value}${this.$refs.hand_tel2.value}${this.$refs.hand_tel3.value}`
-      this.user.id.userEmail = `${this.$refs.email1.value}@${this.$refs.email2.value}`
+      this.user.userEmail = `${this.$refs.email1.value}@${this.$refs.email2.value}`
       this.user.accntAvailPriod = moment().add(this.user.accntAvailPriodLimit, 'years').toISOString()
       // moment().add(this.user.accntAvailPriodLimit, 'years').format('YYYY-MM-DDTHH:mm:ss.SSS')
       this.user.birthInfo = `${this.$refs.byear.value}-${this.$refs.bmonth.value}-${this.$refs.bday.value}`
+      this.user.userMarketing.userId = this.user.userId
       return true
     }
   }

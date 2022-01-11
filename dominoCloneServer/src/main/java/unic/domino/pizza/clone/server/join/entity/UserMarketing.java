@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "user_marketing")
 public class UserMarketing {
     @Id
-    @Column(name = "user_id", nullable = false, length = 50)
+    @Column(name = "user_marketing_id", nullable = false, length = 50)
     private String userId;
     @Column(name = "is_email")
     private boolean isEmail;
