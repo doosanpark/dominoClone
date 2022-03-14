@@ -25,7 +25,7 @@
                 아이디 저장
               </span>
               <span>
-                <a :href="url">아이디 찾기</a>
+                <span>아이디 찾기</span>
                 <span>|</span>
                 <span>비밀번호 찾기</span>
               </span>
@@ -52,7 +52,7 @@ import VueCookies from 'vue-cookies'
 import _ from 'lodash';
 
 export default {
-  name: 'LoginView',
+  name: 'SearchAccnt',
   data() {
     return {
       dismissSecs: 10
@@ -61,7 +61,6 @@ export default {
       , accnt: ""
       , pass: ""
       , save_info: false
-      , url: "/member/findIdPw"
     }
   },
   methods: {
@@ -76,8 +75,12 @@ export default {
       formData.append('accnt', this.accnt);
       formData.append('pass', this.pass);
 
+      console.log("save_info", this.save_info);
+
       const range = _.range(1, 3); // [1, 2]
       const random = _.random(0, 5); // an integer between 0 and 5
+      console.log("range", range);
+      console.log("random", random);
       
       axios.post(
         "http://localhost:8080/checkaccnt"
@@ -109,37 +112,3 @@ export default {
   }
 }
 </script>
-
-<style>
-  #view {
-    display: flex;
-    justify-content: center;
-    margin: 50px;
-  }
-  #login_container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 1000px;
-  }
-  .login_form{
-    width: 500px;
-  }
-  .header{
-    text-align: left;
-  }
-  .input-group{
-    margin: 20px 0;
-  }
-  .chk_item{
-    display: flex;
-    justify-content: space-between;
-  }
-  div{
-    margin: 20px 0;
-  }
-  button{
-    width: 100%;
-  }
-  
-</style>

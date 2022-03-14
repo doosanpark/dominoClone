@@ -5,6 +5,7 @@ import HelloWorld from '@/components/HelloWorld'
 import TestSY from '@/components/TestSY'
 import TestDS from '@/components/TestDS'
 import LoginView from '@/components/LoginView'
+import SearchAccnt from '@/components/SearchAccnt'
 import RegStep2 from '../components/RegStep2'
 
 Vue.use(Router)
@@ -28,9 +29,14 @@ export default new Router({
       component: TestDS
     },
     {
-      path: '/accnt/login',
+      path: '/global/login',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/member/findIdPw',
+      name: 'srchid',
+      component: SearchAccnt
     },
     {
       path: '/member/regStep2',
